@@ -9,7 +9,6 @@ import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 
 object LocationProvider {
-    private val LOCATION_REQUEST = 1000
     private var mFusedLocationClient: FusedLocationProviderClient? = null
     var wayLatitude = 0.0
     var wayLongitude = 0.0
@@ -31,6 +30,7 @@ object LocationProvider {
                     if (location != null) {
                         wayLatitude = location.latitude
                         wayLongitude = location.longitude
+                        Log.i("mLog", "initLocationCallback wayLatitude $wayLatitude, wayLongitude $wayLongitude")
                         if (!isContinue && mFusedLocationClient != null) {
                             mFusedLocationClient!!.removeLocationUpdates(locationCallback!!)
                         }
@@ -66,22 +66,4 @@ object LocationProvider {
         }
     }
 
-    fun updateLocation(activity: Activity) {
-        if (isContinue) {
-            if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return
-            }
-            mFusedLocationClient!!.requestLocationUpdates(locationRequest!!, locationCallback!!, null)
-        } else {
-            mFusedLocationClient!!.lastLocation.addOnSuccessListener { location: Location? ->
-                if (location != null) {
-                    wayLatitude = location.latitude
-                    wayLongitude = location.longitude
-
-                } else {
-                    mFusedLocationClient!!.requestLocationUpdates(locationRequest!!, locationCallback!!, null)
-                }
-            }
-        }
-    }
 }

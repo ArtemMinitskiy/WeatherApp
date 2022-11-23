@@ -40,11 +40,9 @@ class SplashFragment : Fragment() {
         return view
     }
 
-    private fun initLocation() {
+    fun initLocation() {
         LocationProvider.initLocationRequest()
         LocationProvider.initFusedLocation(requireActivity())
-//        setLocationRequest()
-//        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         GpsUtils(requireActivity()).turnGPSOn(object : OnGpsListener {
             override fun gpsStatus(isGPSEnable: Boolean) {
                 isGPS = isGPSEnable
@@ -94,55 +92,4 @@ class SplashFragment : Fragment() {
         if (isGranted) createTimer(2000)
     }
 
-    /*
-    private var mFusedLocationClient: FusedLocationProviderClient? = null
-    private var wayLatitude = 0.0
-    private var wayLongitude = 0.0
-    private var locationRequest: LocationRequest? = null
-    private var locationCallback: LocationCallback? = null
-    private val isContinue = false
-    private fun setLocationRequest() {
-        locationRequest = LocationRequest.create()
-        locationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        locationRequest!!.interval = (10 * 1000).toLong()
-        locationRequest!!.fastestInterval = (5 * 1000).toLong()
-    }
-
-    private fun initLocationCallback() {
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
-                if (locationResult == null) {
-                    return
-                }
-                for (location in locationResult.locations) {
-                    if (location != null) {
-                        wayLatitude = location.latitude
-                        wayLongitude = location.longitude
-                        if (!isContinue && mFusedLocationClient != null) {
-                            mFusedLocationClient!!.removeLocationUpdates(locationCallback!!)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun setLocation() {
-        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            if (isContinue) {
-                mFusedLocationClient!!.requestLocationUpdates(locationRequest!!, locationCallback!!, null)
-            } else {
-                mFusedLocationClient!!.lastLocation.addOnSuccessListener { location: Location? ->
-                    if (location != null) {
-                        wayLatitude = location.latitude
-                        wayLongitude = location.longitude
-                        forecastViewModel!!.getWeatherDetail(wayLatitude, wayLongitude)
-                        if (isGranted) createTimer(2000)
-                    } else {
-                        mFusedLocationClient!!.requestLocationUpdates(locationRequest!!, locationCallback!!, null)
-                    }
-                }
-            }
-        }
-    }*/
 }

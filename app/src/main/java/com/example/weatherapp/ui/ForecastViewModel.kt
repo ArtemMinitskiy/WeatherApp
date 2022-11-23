@@ -16,10 +16,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ForecastViewModel : ViewModel() {
     private var weatherList: MutableLiveData<ModelWeather>? = null
     private fun saveWeatherList(body: ModelWeather) {
-        if (weatherList == null) {
-            weatherList = MutableLiveData()
-            weatherList!!.postValue(body)
-        }
+        weatherList = MutableLiveData()
+        weatherList!!.postValue(body)
     }
 
     fun getWeatherList(): MutableLiveData<ModelWeather>? {
@@ -36,7 +34,6 @@ class ForecastViewModel : ViewModel() {
         val service = makeRetrofitService()
         CoroutineScope(Dispatchers.IO).launch {
             Log.i("mLog", "wayLatitude $wayLatitude, wayLongitude $wayLongitude")
-//            val response = service.getWeather("46.48719996790696", "30.720671684814914")
             val response = service.getWeather(wayLatitude.toString(), wayLongitude.toString())
 
             try {

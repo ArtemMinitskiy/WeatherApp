@@ -36,7 +36,7 @@ class WeatherAdapter(private val modelWeather: ModelWeather) :
         fun bindData(weather: ListWeather) {
             binding.apply {
                 tempText.text = Utils.formatTemp(weather.main!!.temp.toString())
-                feelslikeText.text = "Feels like: ${weather.main!!.feels_like}"
+                feelslikeText.text = "Feels like: ${Utils.formatTemp(weather.main!!.feels_like.toString())}"
                 descriptionText.text = weather.weather!![0].description!!.capitalize()
                 dateText.text = weather.date
                 animationView.setAnimation(Utils.setAdapterAnimation(modelWeather.listWeather!![position].weather!![0].icon!!))

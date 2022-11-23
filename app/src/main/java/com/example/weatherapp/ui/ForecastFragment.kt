@@ -1,5 +1,6 @@
 package com.example.weatherapp.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +9,10 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.weatherapp.model.ModelWeather
 import com.example.weatherapp.adapter.WeatherAdapter
 import com.example.weatherapp.databinding.FragmentForecastBinding
+import com.example.weatherapp.model.ModelWeather
+import com.example.weatherapp.utils.LocationProvider
 
 class ForecastFragment : Fragment() {
     private var _binding: FragmentForecastBinding? = null
@@ -20,6 +22,11 @@ class ForecastFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentForecastBinding.inflate(inflater, container, false)
         forecastViewModel = ViewModelProvider(requireActivity())[ForecastViewModel::class.java]
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            LocationProvider.setLocation(requireActivity()) { updateLocation() }
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
 
         return binding.root
     }
@@ -31,11 +38,7 @@ class ForecastFragment : Fragment() {
             override fun handleOnBackPressed() {}
         })
 
-        forecastViewModel!!.getWeatherList()!!.observe(viewLifecycleOwner) {
-            initRecyclerView(it)
-            binding.cityText.text = it.city!!.city
-        }
-
+        updateUi()
     }
 
     private fun initRecyclerView(modelWeather: ModelWeather) {
@@ -43,6 +46,19 @@ class ForecastFragment : Fragment() {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireActivity().applicationContext, LinearLayoutManager.VERTICAL, false)
             adapter = WeatherAdapter(modelWeather)
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun updateLocation() {
+        forecastViewModel!!.getWeatherDetail(LocationProvider.wayLatitude, LocationProvider.wayLongitude)
+        updateUi()
+    }
+
+    private fun updateUi() {
+        forecastViewModel!!.getWeatherList()!!.observe(viewLifecycleOwner) {
+            initRecyclerView(it)
+            binding.cityText.text = it.city!!.city
         }
     }
 
