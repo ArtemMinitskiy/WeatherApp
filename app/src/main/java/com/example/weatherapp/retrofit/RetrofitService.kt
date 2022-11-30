@@ -13,5 +13,3 @@ interface RetrofitService {
     suspend fun getWeather(): Response<ModelWeather>
 
 }
-//  http://api.openweathermap.org/data/2.5/forecast?lat=46.48719996790696&lon=30.720671684814914&appid=811938537aa2fa23ff4838a05e5ae044
-//  api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}

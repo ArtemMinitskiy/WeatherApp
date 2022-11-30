@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
-        android:text="@{weatherData.city}"
         android:textColor="@color/white"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
-        android:text='@{weatherData.latitude + ", " + weatherData.longitude}'
         android:textAppearance="?android:textAppearanceSmall"
         android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/gd_center"
@@ -56,7 +54,6 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
-        android:text="@{weatherData.temperature}"
         android:textColor="@color/white"
         android:textSize="40sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +65,6 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
-        android:text='@{"Feels like " + weatherData.feels_like}'
         android:textAppearance="?android:textAppearanceMedium"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +75,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
-        android:text="@{weatherData.description}"
         android:textAppearance="?android:textAppearanceLarge"
         android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/gd_center"
@@ -91,7 +86,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_width="wrap_content"
-        android:text="@{weatherData.date}"
         android:textAppearance="?android:textAppearanceSmall"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -103,7 +97,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
-        android:text='@{"Clouds " + weatherData.clouds}'
         android:textAppearance="?android:textAppearanceMedium"
         android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/gd_center"
@@ -115,7 +108,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
-        android:text='@{"Wind " + weatherData.wind}'
         android:textAppearance="?android:textAppearanceMedium"
         android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/gd_center"
@@ -127,7 +119,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_width="wrap_content"
-        android:text='@{"Humidity " + weatherData.humidity}'
         android:textAppearance="?android:textAppearanceMedium"
         android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/gd_center"

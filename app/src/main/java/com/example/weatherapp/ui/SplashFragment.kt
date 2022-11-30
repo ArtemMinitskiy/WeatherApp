@@ -3,6 +3,7 @@ package com.example.weatherapp.ui
 import android.Manifest
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +13,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.weatherapp.App
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentSplashBinding
+import com.example.weatherapp.utils.CheckConnection
 import com.example.weatherapp.utils.GpsUtils
 import com.example.weatherapp.utils.GpsUtils.OnGpsListener
 import com.example.weatherapp.utils.LocationProvider
@@ -28,7 +31,7 @@ class SplashFragment : Fragment() {
     private var isGranted = false
 
     private var permissionsStr = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-
+    private val checkConnection by lazy { CheckConnection(App.getInstance()) }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -40,7 +43,7 @@ class SplashFragment : Fragment() {
         return view
     }
 
-    fun initLocation() {
+    private fun initLocation() {
         LocationProvider.initLocationRequest()
         LocationProvider.initFusedLocation(requireActivity())
         GpsUtils(requireActivity()).turnGPSOn(object : OnGpsListener {
@@ -56,9 +59,9 @@ class SplashFragment : Fragment() {
         isGranted = it.values.first()
         if (it.values.first()) {
             initLocation()
-            Toast.makeText(requireActivity(), "Permission granted", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(requireActivity(), "Permission granted", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(requireActivity(), "Permission denied", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(requireActivity(), "Permission denied", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -88,8 +91,20 @@ class SplashFragment : Fragment() {
     }
 
     private fun transition() {
-        forecastViewModel!!.getWeatherDetail(LocationProvider.wayLatitude, LocationProvider.wayLongitude)
-        if (isGranted) createTimer(2000)
-    }
+        checkConnection.observe(requireActivity()) {
+            if (it) {
+                Log.i("mLog", "Connected")
+                try {
+                    forecastViewModel!!.getLocationWeather(LocationProvider.wayLatitude, LocationProvider.wayLongitude)
+                    if (isGranted) createTimer(2000)
+                } catch (e: Exception) {
+                    Log.e("mLog", "Exception $e")
+                }
+            } else {
+                Toast.makeText(requireActivity(), "Please connect to Internet", Toast.LENGTH_SHORT).show()
+                Log.e("mLog", "Not Connected")
+            }
+        }
 
+    }
 }

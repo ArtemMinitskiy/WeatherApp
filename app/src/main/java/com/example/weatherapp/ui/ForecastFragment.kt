@@ -2,6 +2,7 @@ package com.example.weatherapp.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,14 +52,18 @@ class ForecastFragment : Fragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun updateLocation() {
-        forecastViewModel!!.getWeatherDetail(LocationProvider.wayLatitude, LocationProvider.wayLongitude)
+        forecastViewModel!!.getLocationWeather(LocationProvider.wayLatitude, LocationProvider.wayLongitude)
         updateUi()
     }
 
     private fun updateUi() {
-        forecastViewModel!!.getWeatherList()!!.observe(viewLifecycleOwner) {
-            initRecyclerView(it)
-            binding.cityText.text = it.city!!.city
+        try {
+            forecastViewModel!!.getWeatherList()!!.observe(viewLifecycleOwner) {
+                initRecyclerView(it)
+                binding.cityText.text = it.city!!.city
+            }
+        } catch (e: Exception) {
+            Log.e("mLog", "Exception $e")
         }
     }
 

@@ -12,7 +12,7 @@
         tools:layout_constraintBottom_toBottomOf="parent"
         tools:layout_constraintEnd_toStartOf="@+id/gd_right"
         tools:layout_constraintStart_toStartOf="@+id/gd_left"
-        tools:layout_constraintTop_toTopOf="parent">
+        tools:layout_constraintTop_toTopOf="@id/gd_top">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
@@ -27,7 +27,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:textAppearance="?android:textAppearanceLarge"
                 android:textColor="#FFFF"

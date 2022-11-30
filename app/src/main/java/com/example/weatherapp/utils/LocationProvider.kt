@@ -23,9 +23,7 @@ object LocationProvider {
     fun initLocationCallback() {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
-                if (locationResult == null) {
-                    return
-                }
+                locationResult?.let { return }
                 for (location in locationResult.locations) {
                     if (location != null) {
                         wayLatitude = location.latitude
@@ -41,27 +39,37 @@ object LocationProvider {
     }
 
     fun initLocationRequest() {
-        locationRequest = LocationRequest.create()
-        locationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        locationRequest!!.interval = (10 * 1000).toLong()
-        locationRequest!!.fastestInterval = (5 * 1000).toLong()
+        locationRequest?.apply {
+            LocationRequest.create()
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            interval = (10 * 1000).toLong()
+            fastestInterval = (5 * 1000).toLong()
+        }
     }
 
     fun setLocation(activity: Activity, transition: () -> (Unit)) {
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            if (isContinue) {
-                mFusedLocationClient!!.requestLocationUpdates(locationRequest!!, locationCallback!!, null)
-            } else {
-                mFusedLocationClient!!.lastLocation.addOnSuccessListener { location: Location? ->
-                    if (location != null) {
-                        Log.i("mLog", "wayLatitude $wayLatitude, wayLongitude $wayLongitude")
-                        wayLatitude = location.latitude
-                        wayLongitude = location.longitude
-                        transition()
-                    } else {
-                        mFusedLocationClient!!.requestLocationUpdates(locationRequest!!, locationCallback!!, null)
+            try {
+                if (isContinue) {
+                    mFusedLocationClient!!.requestLocationUpdates(locationRequest!!, locationCallback!!, null)
+                } else {
+                    mFusedLocationClient!!.lastLocation.addOnSuccessListener { location: Location? ->
+                        if (location != null) {
+                            Log.i("mLog", "setLocation() wayLatitude $wayLatitude, wayLongitude $wayLongitude")
+                            wayLatitude = location.latitude
+                            wayLongitude = location.longitude
+                            transition()
+                        } else {
+                            try {
+                                mFusedLocationClient!!.requestLocationUpdates(locationRequest!!, locationCallback!!, null)
+                            } catch (e: Exception) {
+                                Log.e("mLog", "Exception $e")
+                            }
+                        }
                     }
                 }
+            } catch (e: Exception) {
+                Log.e("mLog", "Exception $e")
             }
         }
     }

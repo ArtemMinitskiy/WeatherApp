@@ -30,7 +30,7 @@ class ForecastViewModel : ViewModel() {
         return Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build().create(RetrofitService::class.java)
     }
 
-    fun getWeatherDetail(wayLatitude: Double, wayLongitude: Double) {
+    fun getLocationWeather(wayLatitude: Double, wayLongitude: Double) {
         val service = makeRetrofitService()
         CoroutineScope(Dispatchers.IO).launch {
             Log.i("mLog", "wayLatitude $wayLatitude, wayLongitude $wayLongitude")

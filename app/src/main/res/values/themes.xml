@@ -11,12 +11,14 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:windowTranslucentNavigation">false</item>
         <!-- Customize your theme here. -->
     </style>
 
     <style name="Theme.WeatherApp.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="Theme.WeatherApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
